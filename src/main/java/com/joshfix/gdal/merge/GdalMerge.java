@@ -1,5 +1,6 @@
 package com.joshfix.gdal.merge;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.gdal.gdal.Band;
 import org.gdal.gdal.Dataset;
 import org.gdal.gdal.Driver;
@@ -421,9 +422,47 @@ public class GdalMerge {
         // NOTE not sure what to do with these yet... assumed nodata value was a double, but that can't equal an int array
         //mask_test = Numeric.equal(data_mask, 0)
         //to_write = Numeric.choose(mask_test, (data_src, data_dst) )
+        // 计算该类型的字节数
+//        int typeSize = gdal.GetDataTypeSize(t_band.getDataType());
+//        // 一个byte8位，计算倍数只需除以8即可
+//        int byteToType = typeSize / 8;
+//        ByteBuffer data_out = SelectByMark(data_src,data_mark,data_dst,t_xsize,t_ysize,byteToType,0);
+//        data_out.position(0);
 
         t_band.WriteRaster_Direct( t_xoff, t_yoff, t_xsize, t_ysize, t_band.getDataType(), data_src);
 
         return 0;
     }
+
+//    public byte[] decodeValue(ByteBuffer bytes) {
+//        int len = bytes.limit() - bytes.position();
+//        byte[] bytes1 = new byte[len];
+//        bytes.get(bytes1);
+//        return bytes1;
+//    }
+//    public ByteBuffer encodeValue(byte[] value) {
+//        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(value.length);
+//        byteBuffer.clear();
+//        byteBuffer.get(value, 0, value.length);
+//        return byteBuffer;
+//    }
+//    public ByteBuffer SelectByMark(ByteBuffer src,ByteBuffer mark,ByteBuffer dst,int XSize, int YSize,int byteToType,int eqValue) {
+//        byte[] _src = decodeValue(src);
+//        byte[] _dst = decodeValue(dst);
+//        byte[] _mark = decodeValue(mark);
+//        int rowPixels = XSize * byteToType;
+//        for (int r = 0; r < YSize; r++) {
+//            for (int c = 0; c < XSize; c++) {
+//                int firstIndex = rowPixels * r + byteToType * c;
+//                if (ArrayUtils.
+//                        isEquals(eqValue, ArrayUtils.subarray(_mark, firstIndex, firstIndex + byteToType))) {
+//                    for (int b = 0; b < byteToType; b++) {
+//                        _dst[firstIndex + b] = _src[firstIndex + b];
+//                    }
+//                }
+//            }
+//        }
+//        // dst = encodeValue(_dst);
+//        return encodeValue(_dst);
+//    }
 }
